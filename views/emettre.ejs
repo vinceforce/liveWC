@@ -1,0 +1,122 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Emission de vidéo</title>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <style>
+video {
+  width:680px;
+  height:320px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid #ccc;
+}
+.grayscale {
+  +filter: grayscale(1);
+  -webkit-filter: grayscale(1);
+}
+.sepia {
+  +filter: sepia(1);
+  -webkit-filter: sepia(1);
+}
+.blur {
+  +filter: blur(3px);
+  -webkit-filter: blur(3px);
+}
+.brightness {
+  +filter: brightness(150%);
+  -webkit-filter: brightness(150%);
+}
+.contrast {
+  +filter: brightness(200%);
+  -webkit-filter: brightness(200%);
+}
+.hue-rotate {
+  +filter:hue-rotate(90deg);
+  -webkit-filter: hue-rotate(90deg);
+}
+.hue-rotate2 {
+  +filter:hue-rotate(135deg);
+  -webkit-filter: hue-rotate(135deg);
+}
+.hue-rotate3 {
+  +filter:hue-rotate(180deg);
+  -webkit-filter: hue-rotate(180deg);
+}
+.saturate {
+  +filter:saturate(8);
+  -webkit-filter: saturate(8);
+}
+.invert {
+  +filter:invert(100%);
+  -webkit-filter: invert(100%);
+}
+</style>
+
+</head>
+<body>
+  <video src="" id="video" autoplay="true"></video>
+
+  <canvas style="display:none" id="preview"></canvas>
+  <div id="logger"></div>
+
+  <script type="text/javascript">
+
+    var canvas = document.getElementById("preview");
+    var context = canvas.getContext("2d");
+    canvas.width = 800;
+    canvas.height = 600;
+    context.width = canvas.width;
+    context.height = canvas.height;
+
+    var video = document.getElementById("video");
+
+    var socket = io('/<%=channel%>');
+
+    function logger(msg){
+      $("#logger").text(msg);
+    }
+
+    function loadCam(stream){
+      video.src = window.URL.createObjectURL(stream);
+      logger('Caméra correctement chargée [OK]');
+    }
+
+    function loadFail(){
+      logger('Caméra non connectée, merci de vérifier votre caméra!')
+    }
+
+    function viewVideo(video, context){
+      context.drawImage(video, 0, 0,context.width,context.height);
+      socket.emit('stream-<%=user%>',canvas.toDataURL('image/jpeg', 0.6));
+    }
+
+    $(function(){
+      navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+      if (navigator.getUserMedia) {
+        navigator.getUserMedia({video: { width: { min: 1024, ideal: 1280, max: 1920 },
+           height: { min: 776, ideal: 720, max: 1080 } }, audio: true},loadCam, loadFail);
+      }
+      setInterval(function(){
+        viewVideo(video,context);
+      }, 70);
+    });
+ </script>
+ <script>
+ var idx = 0;
+ var filters = ['grayscale', 'sepia', 'blur', 'brightness',
+                'contrast', 'hue-rotate', 'hue-rotate2',
+                'hue-rotate3', 'saturate', 'invert', ''];
+
+ function changeFilter(e) {
+   var el = e.target;
+   el.className = '';
+   var effect = filters[idx++ % filters.length]; // loop through filters.
+   if (effect) {
+     el.className = effect;
+   }
+ }
+ document.querySelector('video').addEventListener('click', changeFilter, false);
+ </script>
+</body>
+</html>
