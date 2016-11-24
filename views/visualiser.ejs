@@ -2,30 +2,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Visualisation vidéo 1</title>
-  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-  <img id="play-1" />
-  <img id="play-2" />
-  <img id="play-3" />
-  <img id="play-4" />
-  <img id="play-5" />
-  <img id="play-6" />
-  <img id="play-7" />
-  <img id="play-8" />
-  <img id="play-9" />
-  <img id="play-10" />
+  <img style="display:none" id="play-model" />
   <div id="logger"></div>
   <script>
-    var socket = io('/<%=channel%>');
-    for (var ii=1; ii<=6; ii++) {
-      socket.on('stream-'+ii, function(image){
-        var img = document.getElementById("play-" + ii);
-        img.src = image;
+    var socket = io('/<%=room%>');
+    var playerIDs = [];
+    var playImg;
+    socket.on('stream-prepare', function(data){
+      if (data.room  == '<%=room%>') {
+        var playerId = 'play' + data.socketId.split('#')[1];
+        if (!playerIDs.includes(playerId)) {
+          $('#play-model').clone().insertBefore('#logger').attr('id', playerId).attr('style', 'display:inline; max-height:200px');
+          playerIDs.push(playerId);
+        }
+      }
+    });
+    socket.on('stream-delete', function(data){
+      if (data.room  == '<%=room%>') {
+        var playerId = 'play' + data.socketId.split('#')[1];
+        if (playerIDs.includes(playerId)) {
+          $('#' + playerId).remove();
+          var indOf = playerIDs.indexOf(playerId);
+          playerIDs.slice(indOf, indOf + 1);
+        }
+      }
+    });
+    socket.on('stream', function(data){
+      var playerId = 'play' + data.socketId.split('#')[1];
+      if (playerIDs.includes(playerId)) {
+        document.getElementById(playerId).src = data.image;
         //$("#logger").text(image);
-      });
-    }
+      }
+    });
   </script>
 </body>
 </html>

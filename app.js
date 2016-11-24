@@ -6,33 +6,44 @@ var Log = require("log");
   log = new Log("debug")
 var port = process.env.PORT || 3000;
 //app.use(express.static(__dirname  + "/public"));
+// app.get('/', function(req,res){
+//   res.redirect('index.html');
+// });
 var router = express.Router();
-router.get('/emettre/:channel/:user', function(req, res) {
-    res.render('emettre.ejs', {channel: req.params.channel, user: req.params.user});
+router.get('/emettre/:room', function(req, res) {
+    res.render('emettre.ejs', {room: req.params.room});
 });
-router.get('/visualiser/:channel', function(req, res) {
-    res.render('visualiser.ejs', {channel: req.params.channel});
+router.get('/visualiser/:room', function(req, res) {
+    res.render('visualiser.ejs', {room: req.params.room});
 });
 router.get('/', function(req, res) {
     res.render('index.ejs');
 });
-app.use('/', router);
-// app.get('/', function(req,res){
-//   res.redirect('index.html');
-// });
-var channels = [];
+app.use('/', router).use(express.static(__dirname  + "/public"));
+var rooms = ['/room1', '/room2'];
+var roomsIO = [];
 
-for (var ii=1; ii<=2; ii++) {
-  channels[ii] = io.of('/' + ii);
-  channels[ii].on('connection', function(socket){
-    for (var jj=1; jj<=3; jj++) {
-      socket.on('stream-' + jj, function(image){
-        socket.broadcast.emit('stream-' + jj, image)
-      });
-    }
+for (var ii=0; ii<=1; ii++) {
+  var roomIO = io.of(rooms[ii]);
+  roomIO.on('connection', function(socket){
+    //console.log('roomIO ' + ii);
+    socket.on('stream-prepare' , function(data){
+      //console.log('stream-prepare ' + data.room);
+      socket.emit('stream-id', {room: data.room, socketId: socket.id});
+      socket.broadcast.emit('stream-prepare', {room: data.room, socketId: socket.id});
+    });
+    socket.on('stream' , function(data){
+      //console.log("app broadcast emit stream");
+      socket.broadcast.emit('stream', data);
+    });
   });
+  roomIO.on('disconnect', function(socket){
+    socket.broadcast.emit('stream-delete', {room: data.room, socketId: socket.id});
+  });
+
+  roomsIO.push(roomIO);
 }
 
 http.listen(port, function(){
-  log.info('Serveur à l\'écoute du port %s', port)
+  log.info('Serveur à l\'écoute du port %s', port);
 });

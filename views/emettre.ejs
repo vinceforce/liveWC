@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Emission de vidéo</title>
-  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <style>
 video {
@@ -71,7 +71,16 @@ video {
 
     var video = document.getElementById("video");
 
-    var socket = io('/<%=channel%>');
+    var socket = io('/<%=room%>');
+    var socketId;
+    // socket.on('stream-id', function(data){
+    //   alert('data.room'  + data.room );
+    //   if (data.room  == '<%=room%>') {
+    //     socketId = data.socketId;
+    //   }
+    // });
+    //alert(socket.id);
+    var vdTokens = [];
 
     function logger(msg){
       $("#logger").text(msg);
@@ -86,9 +95,15 @@ video {
       logger('Caméra non connectée, merci de vérifier votre caméra!')
     }
 
-    function viewVideo(video, context){
+    function viewVideo(video, context, socketId){
       context.drawImage(video, 0, 0,context.width,context.height);
-      socket.emit('stream-<%=user%>',canvas.toDataURL('image/jpeg', 0.6));
+      socket.emit('stream', {socketId: socketId, image: canvas.toDataURL('image/jpeg', 0.6)});
+      //alert('emission événement ' + 'stream-' + socket.id);
+    }
+
+    function createVideoToken() {
+      //alert(room + ' | ' + socketId);
+      socket.emit('stream-prepare', {room: '<%= room %>'});
     }
 
     $(function(){
@@ -97,9 +112,20 @@ video {
         navigator.getUserMedia({video: { width: { min: 1024, ideal: 1280, max: 1920 },
            height: { min: 776, ideal: 720, max: 1080 } }, audio: true},loadCam, loadFail);
       }
+      createVideoToken();
       setInterval(function(){
-        viewVideo(video,context);
-      }, 70);
+        createVideoToken();
+      }, 2000);
+      socket.on('stream-id', function(data){
+        //alert('data.room '  + data.room + ' | ' + 'data.socketId ' + data.socketId);
+        if (data.room  == '<%=room%>') {
+          socketId = data.socketId;
+          setInterval(function(){
+            viewVideo(video, context, socketId);
+          }, 560);
+        }
+      });
+      //alert('<%= room %>' + ' | ' + socketId);
     });
  </script>
  <script>
