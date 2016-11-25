@@ -108,7 +108,7 @@ video {
     }
 
     $(function(){
-      navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+      navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
       if (navigator.getUserMedia) {
       //   navigator.getUserMedia({video: { width: { min: 1024, ideal: 1280, max: 1920 },
       //      height: { min: 776, ideal: 720, max: 1080 } }, audio: true},loadCam, loadFail);
@@ -144,6 +144,7 @@ video {
    var effect = filters[idx++ % filters.length]; // loop through filters.
    if (effect) {
      el.className = effect;
+     socket.emit('stream-effect', {room: '<%=room%>', effectclass : effect});
    }
  }
  document.querySelector('video').addEventListener('click', changeFilter, false);

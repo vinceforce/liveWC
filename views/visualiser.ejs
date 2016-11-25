@@ -4,7 +4,48 @@
   <title>Visualisation vidéo 1</title>
   <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-</head>
+  <style>
+.grayscale {
+  +filter: grayscale(1);
+  -webkit-filter: grayscale(1);
+}
+.sepia {
+  +filter: sepia(1);
+  -webkit-filter: sepia(1);
+}
+.blur {
+  +filter: blur(3px);
+  -webkit-filter: blur(3px);
+}
+.brightness {
+  +filter: brightness(150%);
+  -webkit-filter: brightness(150%);
+}
+.contrast {
+  +filter: brightness(200%);
+  -webkit-filter: brightness(200%);
+}
+.hue-rotate {
+  +filter:hue-rotate(90deg);
+  -webkit-filter: hue-rotate(90deg);
+}
+.hue-rotate2 {
+  +filter:hue-rotate(135deg);
+  -webkit-filter: hue-rotate(135deg);
+}
+.hue-rotate3 {
+  +filter:hue-rotate(180deg);
+  -webkit-filter: hue-rotate(180deg);
+}
+.saturate {
+  +filter:saturate(8);
+  -webkit-filter: saturate(8);
+}
+.invert {
+  +filter:invert(100%);
+  -webkit-filter: invert(100%);
+}
+</style></head>
 <body>
   <img style="display:none" id="play-model" />
   <div id="logger"></div>
@@ -35,6 +76,13 @@
       var playerId = 'play' + data.socketId.split('#')[1];
       if (playerIDs.includes(playerId)) {
         document.getElementById(playerId).src = data.image;
+        //$("#logger").text(image);
+      }
+    });
+    socket.on('stream-effect', function(data){
+      var playerId = 'play' + data.socketId.split('#')[1];
+      if (playerIDs.includes(playerId)) {
+        document.getElementById(playerId).class = data.effect;
         //$("#logger").text(image);
       }
     });
