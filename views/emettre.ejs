@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -120,9 +121,10 @@ video {
         //alert('data.room '  + data.room + ' | ' + 'data.socketId ' + data.socketId);
         if (data.room  == '<%=room%>') {
           socketId = data.socketId;
-          setInterval(function(){
-            viewVideo(video, context, socketId);
-          }, 560);
+          // setInterval(function(){
+          //   viewVideo(video, context, socketId);
+          // }, 560);
+          setInterval(viewVideo, 560, video, context, socketId);
         }
       });
       //alert('<%= room %>' + ' | ' + socketId);
