@@ -82,7 +82,7 @@
     socket.on('stream-effect', function(data){
       var playerId = 'play' + data.socketId.split('#')[1];
       if (playerIDs.includes(playerId)) {
-        document.getElementById(playerId).class = data.effect;
+        document.getElementById(playerId).className = data.effectclass;
         //$("#logger").text(image);
       }
     });

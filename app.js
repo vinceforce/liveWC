@@ -38,7 +38,7 @@ for (var ii=0; ii<=1; ii++) {
     });
     socket.on('stream-effect' , function(data){
       //console.log("app broadcast emit stream");
-      socket.broadcast.emit('stream-effect', {room: data.room, effectclass : effect, socketId: socket.id});
+      socket.broadcast.emit('stream-effect', {room: data.room, effectclass : data.effectclass, socketId: socket.id});
     });
   });
   roomIO.on('disconnect', function(socket){
