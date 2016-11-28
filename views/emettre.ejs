@@ -74,6 +74,7 @@ video {
 
     var socket = io('/<%=room%>');
     var socketId;
+    var imgVid;
     // socket.on('stream-id', function(data){
     //   alert('data.room'  + data.room );
     //   if (data.room  == '<%=room%>') {
@@ -98,7 +99,8 @@ video {
 
     function viewVideo(video, context, socketId){
       context.drawImage(video, 0, 0,context.width,context.height);
-      socket.emit('stream', {socketId: socketId, image: canvas.toDataURL('image/jpeg', 0.6)});
+      imgVid = canvas.toDataURL('image/jpeg', 0.6);
+      socket.emit('stream', {socketId: socketId, image: imgVid});
       //alert('emission événement ' + 'stream-' + socket.id);
     }
 
@@ -126,7 +128,7 @@ video {
           // setInterval(function(){
           //   viewVideo(video, context, socketId);
           // }, 560);
-          setInterval(viewVideo, 560, video, context, socketId);
+          setInterval(viewVideo, 1120, video, context, socketId);
         }
       });
       //alert('<%= room %>' + ' | ' + socketId);
