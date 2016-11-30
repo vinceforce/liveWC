@@ -63,12 +63,16 @@
       }
     });
     socket.on('stream-delete', function(data){
-      if (data.room  == '<%=room%>') {
+      var room = data.socketId.split('#')[0];
+      // alert('data.socketId : '+ data.socketId);
+    if (room  == '/<%=room%>') {
         var playerId = 'play' + data.socketId.split('#')[1];
+        // alert('playerId : ' + playerId);
         if (playerIDs.includes(playerId)) {
           $('#' + playerId).remove();
           var indOf = playerIDs.indexOf(playerId);
-          playerIDs.slice(indOf, indOf + 1);
+          // playerIDs.slice(indOf, indOf + 1);
+          playerIDs.splice(indOf, 1);
         }
       }
     });
