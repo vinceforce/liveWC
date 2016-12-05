@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" media="screen">
+ <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+ <link rel="stylesheet" href="/css/style.css">
+ <title><%-title%></title>
+ <script type="text/javascript" src="/js/jquery.min.js"></script>
+ <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<% include ./partials/header %>
+<% if (locals.user || locals.anonymousContent) { %>
+<%-body%>
+<% }
+else { %>
+  <h2>Please login to access Live WebCam</h2>
+  <% } %>
+<% if (error && error.length > 0) { %>
+  <br />
+  <h4 class="error-msg"><%= error %></h4>
+  <br />
+  <% } %>
+</body>
+</html>

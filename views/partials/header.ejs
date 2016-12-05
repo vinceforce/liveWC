@@ -1,0 +1,13 @@
+<nav class="container">
+  <div class="row">
+    <% if (!locals.user) { %>
+      <div class="col-md-3"><a href="/"><button type="button" class="btn">Accueil</button></a></div>
+      <div class="col-md-3"><a href="/login"><button type="button" class="btn">Login</button></a></div>
+      <div class="col-md-3"><a href="/auth/google"><button type="button" class="btn">Login with Google</button></a></div>
+      <div class="col-md-3"><a href="/register"><button type="button" class="btn">Register</button></a></div>
+    <% } else { %>
+      <div class="col-md-6"><a href="/"><button type="button" class="btn">Accueil</button></a></div>
+      <div class="col-md-6"><a href="/logout"><button type="button" class="btn">Logout</button></a></div>
+    <% } %>
+  </div>
+</nav>

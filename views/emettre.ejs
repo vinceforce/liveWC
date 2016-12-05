@@ -1,61 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Emission de vidéo</title>
-  <script type="text/javascript" src="/js/jquery.min.js"></script>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <style>
-video {
-  width:680px;
-  height:320px;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid #ccc;
-}
-.grayscale {
-  +filter: grayscale(1);
-  -webkit-filter: grayscale(1);
-}
-.sepia {
-  +filter: sepia(1);
-  -webkit-filter: sepia(1);
-}
-.blur {
-  +filter: blur(3px);
-  -webkit-filter: blur(3px);
-}
-.brightness {
-  +filter: brightness(150%);
-  -webkit-filter: brightness(150%);
-}
-.contrast {
-  +filter: brightness(200%);
-  -webkit-filter: brightness(200%);
-}
-.hue-rotate {
-  +filter:hue-rotate(90deg);
-  -webkit-filter: hue-rotate(90deg);
-}
-.hue-rotate2 {
-  +filter:hue-rotate(135deg);
-  -webkit-filter: hue-rotate(135deg);
-}
-.hue-rotate3 {
-  +filter:hue-rotate(180deg);
-  -webkit-filter: hue-rotate(180deg);
-}
-.saturate {
-  +filter:saturate(8);
-  -webkit-filter: saturate(8);
-}
-.invert {
-  +filter:invert(100%);
-  -webkit-filter: invert(100%);
-}
-</style>
-
-</head>
-<body>
   <video src="" id="video" autoplay="true"></video>
 
   <canvas style="display:none" id="preview"></canvas>
@@ -75,7 +17,7 @@ video {
 
     var socket = io('/<%=room%>');
     var socketId;
-    var imgVid;
+    let imgVid;
     // socket.on('stream-id', function(data){
     //   alert('data.room'  + data.room );
     //   if (data.room  == '<%=room%>') {
@@ -129,7 +71,7 @@ video {
           // setInterval(function(){
           //   viewVideo(video, context, socketId);
           // }, 560);
-          setInterval(viewVideo, 1120, video, context, socketId);
+          setInterval(viewVideo, 2240, video, context, socketId);
         }
       });
       //alert('<%= room %>' + ' | ' + socketId);
@@ -152,5 +94,5 @@ video {
  }
  document.querySelector('video').addEventListener('click', changeFilter, false);
  </script>
-</body>
-</html>
+ <%- contentFor('title') %>
+ Emission de vidéo

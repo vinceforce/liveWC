@@ -13,9 +13,24 @@
         "morgan": "^1.6.1",
         "passport": "^0.2.2",
         "passport-local": "^1.0.0",
-        "jquery": "*"
+        "passport-google-oauth" : "*",
+        "mongoose" : "*",
+        "passport-local-mongoose" : "*",
+        "jquery": "*",
+        "serve-favicon" : "*",
+        "path" : "*",
+        "express-ejs-layouts" : "*",
+        "should": "~2.1.0",
+        "debug": "^2.1.1",
+        "chai": "~1.8.1",
+        "mocha": "~1.14.0",
+        "connect-flash": "^0.1.1"
     },
     "author": "Vincent Force <vincentforce@yahoo.fr>",
     "description": "Live streaming en Node",
-    "license": "Unlicense"
+    "license": "Unlicense",
+    "scripts": {
+      "start": "node ./bin/www",
+      "test": "make test"
+     }
 }
