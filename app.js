@@ -83,10 +83,10 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 */
 
-// mongoose
-if (app.get('env') === 'development') {
-  mongoose.connect('mongodb://localhost/liveWC');
-}
+// // mongoose
+// if (app.get('env') === 'development') {
+//   mongoose.connect('mongodb://localhost/liveWC');
+// }
 // Heroku
 mongoose.connect('mongodb://heroku_v1znbgv1:liveWCTafQuest*512@ds119598.mlab.com:19598/heroku_v1znbgv1');
 
