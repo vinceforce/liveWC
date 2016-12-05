@@ -84,7 +84,12 @@ passport.deserializeUser(Account.deserializeUser());
 */
 
 // mongoose
-mongoose.connect('mongodb://localhost/liveWC');
+if (app.get('env') === 'development') {
+  mongoose.connect('mongodb://localhost/liveWC');
+}
+// Heroku
+mongoose.connect('mongodb://heroku_v1znbgv1:liveWCTafQuest*512@ds119598.mlab.com:19598/heroku_v1znbgv1');
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
