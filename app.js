@@ -88,7 +88,8 @@ passport.deserializeUser(Account.deserializeUser());
 //   mongoose.connect('mongodb://localhost/liveWC');
 // }
 // Heroku
-mongoose.connect('mongodb://heroku_v1znbgv1:H_Oxka0j6bbfSyJkYWhWteB4pl_VdmwH@ds119598.mlab.com:19598/heroku_v1znbgv1');
+mongoose.connect('mongodb://heroku_v1znbgv1:js361a8t7sg7h09i3ujsvoet3r@ds119598.mlab.com:19598/heroku_v1znbgv1');
+
 
 
 // catch 404 and forward to error handler
