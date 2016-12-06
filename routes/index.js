@@ -3,6 +3,7 @@ var passport = require('passport');
 var Account = require('../models/account');
 var router = express.Router();
 
+// Emission / réception de vidéo
 router.get('/emettre/:room', function(req, res) {
   res.locals = {user: req.user, anonymousContent: false};
   res.render('emettre', {room: req.params.room, user : req.user, error : ''});
@@ -11,11 +12,12 @@ router.get('/emettre/:room', function(req, res) {
   res.locals = {user: req.user, anonymousContent: false};
   res.render('visualiser', {room: req.params.room, user : req.user, error : ''});
 })
-
+// Page d'accueil
 .get('/', function (req, res) {
   res.locals = {user: req.user, anonymousContent: false};
   res.render('index', { user : req.user, error : '' });
 })
+// Gestion utilisateurs locaux
 .get('/register', function(req, res) {
   res.locals = {user: req.user, anonymousContent: true};
   res.render('register', { error : '', user: '' });
@@ -42,7 +44,7 @@ router.get('/emettre/:room', function(req, res) {
 .post('/login', passport.authenticate('local'), function(req, res) {
     res.redirect('/');
 })
-// route for showing the profile page
+// route for showing the Google profile page
 .get('/profile', isLoggedIn, function(req, res) {
   res.locals = {user: req.user, anonymousContent: false};
   res.render('profile', {

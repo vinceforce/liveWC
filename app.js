@@ -37,51 +37,10 @@ app.set('views', path.join(__dirname, 'views'))
 }))
 .use(passport.initialize())
 .use(passport.session())
-.use(express.static(path.join(__dirname, 'public')))
+.use(express.static(path.join(__dirname, 'public'), { maxAge: 500}))
 .use(expressLayouts)
 .use('/', routes);
 
-
-/*
-
-// passport config
-var Account = require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-// passport.serializeUser(Account.serializeUser());
-// passport.deserializeUser(Account.deserializeUser());
-
-// Google oAuth
-passport.use(new GoogleStrategy({
-    clientId: '368305440792-d2qe1foo5qojlb3pf68q6f2g7t874094.apps.googleusercontent.com',
-    clientSecret: 'YHcq8eYFXMZAA0QfRRyJcKtR',
-    callbackURL: 'http://localhost:3000/auth/callback/google'
-  },
-  function(accessToken, refreshToken, profile, done) {
-    Account.register(new Account({ username : profile.sub, name: profile.name, email: profile.email, image: profile.picture}), '12345', function(err, account) {
-        if (err) {
-          console.log('Erreur après création du profil Google');
-          return res.render('index', { error : err.message });
-        }
-
-        passport.authenticate('google')(req, res, function () {
-            req.session.save(function (err) {
-                if (err) {
-                    return next(err);
-                }
-                console.log('Erreur avantredirection suite à création du profil Google');
-                res.redirect('/');
-            });
-        });
-        done(err, account);
-    });
-    // User.findOrCreate({username: profile.info.uid}, function (err, user) {
-    //   done(err, user);
-    // });
-  }
-));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
-*/
 
 // // mongoose
 // if (app.get('env') === 'development') {
