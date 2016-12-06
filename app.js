@@ -16,8 +16,6 @@ var expressLayouts = require('express-ejs-layouts');
 
 var routes = require('./routes/index');
 var passport = require('passport');
-// var LocalStrategy = require('passport-local').Strategy;
-// var GoogleStrategy = require('passport-google-auth').Strategy;
 var passportConfig = require('./config/passport');
 passportConfig(passport);
 
@@ -37,7 +35,7 @@ app.set('views', path.join(__dirname, 'views'))
 }))
 .use(passport.initialize())
 .use(passport.session())
-.use(express.static(path.join(__dirname, 'public'), { maxAge: 500}))
+.use(express.static(path.join(__dirname, 'public'), { maxAge: 200}))
 .use(expressLayouts)
 .use('/', routes);
 
